@@ -1,5 +1,5 @@
 -- Trabalho 1 de PF (GBC033)
--- Grupo: Mateus Carmo e Nayara
+-- Grupo: Mateus Carmo e Nayara Nunes
 -- Exercício 1
 triangulo :: Float -> Float -> Float -> [Char]
 triangulo a b c
@@ -11,7 +11,8 @@ triangulo a b c
 
 -- Exercício 2
 bhaskara :: Float -> Float -> Float -> (Float, Float)
-bhaskara a b c = ((-b + sqrt(b**2 - 4*a*c)) / 2*a, (-b - sqrt(b**2 - 4*a*c)) / 2*a)
+bhaskara a b c = ((-b + sqrt(delta)) / (2*a), (-b - sqrt(delta)) / (2*a))
+  where delta = b**2 - 4*a*c
 
 equacao :: Float -> Float -> Float -> (Float, Float)
 equacao a b c
@@ -99,12 +100,17 @@ fizz_or_buzz i
 fizzbuzz :: Int -> [String]
 fizzbuzz n = [fizz_or_buzz i | i<-[1..n]]
 
--- Exercício 11
--- conta_ocorrencias :: Int -> Int -> [Int] -> (Int, Int)
--- conta_ocorrencias a _ [a] = (1,0)
--- conta_ocorrencias _ b [b] = (0,1)
--- conta_ocorrencias a b x:y:tail
---  | a == x = conta_ocorrencias a b [y:tail]
+-- Exercício 11 (?)
+conta_par :: Int -> Int -> [Int] -> (Int, Int) -> (Int, Int)
+conta_par _ _ [] tupla = tupla
+conta_par a b (x:xs) (na,nb)
+ | x == a && x == b = conta_par a b xs (na+1,nb+1)
+ | x == a = conta_par a b xs (na+1,nb)
+ | x == b = conta_par a b xs (na,nb+1)
+ | otherwise = conta_par a b xs (na,nb)
+
+conta_ocorrencias :: Int -> Int -> [Int] -> (Int, Int)
+conta_ocorrencias a b lista = conta_par a b lista (0,0)
 
 -- Exercício 12
 encontrada :: Int -> [Int] -> Bool
@@ -173,3 +179,47 @@ reverte :: [a] -> [a]
 reverte [] = []
 reverte [a] = [a]
 reverte (x:xs) = (reverte xs) ++ [x]
+
+-- Exercício 18
+sem_repetidos :: Eq a => [a] -> [a]
+sem_repetidos [] = []
+sem_repetidos [a] = [a]
+sem_repetidos (x:xs) = if elem x xs then sem_repetidos xs else x:(sem_repetidos xs)
+
+-- Exercício 19
+disponiveis :: [Int]
+disponiveis = [1,2,5,10,20,50,100]
+
+notas_troco :: Int -> [[Int]]
+notas_troco 0 = [[]]
+notas_troco n = [ initial:rest | initial<-disponiveis, initial <= n, rest<-notas_troco (n-initial) ]
+
+-- Exercício 20
+
+-- gera todos os possíveis tabuleiros
+gera_tabuleiro :: Int -> Int -> [[Int]]
+gera_tabuleiro n cont
+ | n == cont = [[]]
+ | otherwise = [h:t | h<-[1..n], cont < n, t<-(gera_tabuleiro n (cont+1))]
+
+-- regras para rainhas
+rainhas_capturam :: (Int, Int) -> (Int, Int) -> Bool
+rainhas_capturam (x1,y1) (x2,y2)
+ | x1 == x2 || y1 == y2 = True
+ | abs (x1 - x2) == abs (y1 - y2) = True
+ | otherwise = False
+
+-- compara todas as rainhas em um tabuleiro
+compare_all :: [Int] -> Int -> Int -> Bool
+compare_all l i j
+ | d1 /= d2 && rainhas_capturam d1 d2 = False
+ | i == (length l) - 1 = True
+ | j == (length l) - 1 = compare_all l (i+1) (i+1)
+ | otherwise = compare_all l i (j+1)
+ where
+     d1 = (l !! i, i+1)
+     d2 = (l !! j, j+1)
+
+-- função principal
+nRainhas :: Int -> [[Int]]
+nRainhas n = [x | x<-(gera_tabuleiro n 0),  (compare_all x 0 0) == True]
