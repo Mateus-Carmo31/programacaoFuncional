@@ -1,6 +1,6 @@
 # Exercício 3
 
-## 1) $(\lambda x.\ 2x + 1)\ 3$
+### 1) $(\lambda x.\ 2x + 1)\ 3$
 
 $$
 (\lambda x.\ 2x + 1)\ 3 \Longrightarrow
@@ -10,7 +10,7 @@ $$
 
 Resposta: $7$
 ___
-## 2) $(\lambda xy.\ x-y)\ 5\ 7$
+### 2) $(\lambda xy.\ x-y)\ 5\ 7$
 
 $$
 (\lambda xy.\ x-y)\ 5\ 7 \Longrightarrow
@@ -20,7 +20,7 @@ $$
 
 Resposta: $-2$
 ___
-## 3) $(\lambda yx.\ x-y)\ 5\ 7$
+### 3) $(\lambda yx.\ x-y)\ 5\ 7$
 
 $$
 (\lambda yx.\ x-y)\ 5\ 7 \Longrightarrow
@@ -30,7 +30,7 @@ $$
 
 Resposta: $2$
 ___
-## 4) $(\lambda xy.\ x-y)\ (\lambda z.\ z/2)$
+### 4) $(\lambda xy.\ x-y)\ (\lambda z.\ z/2)$
 
 $$
 (\lambda xy.\ x-y)\ (\lambda z.\ z/2)
@@ -39,7 +39,7 @@ $$
 Resposta: Não é possível reduzir mais do que isso, logo a resposta é $(\lambda xy.\ x-y)\ (\lambda z.\ z/2)$.
 
 ___
-## 5) $(\lambda xy.\ x-y)\ ((\lambda z.\ z/2)\ 6)\ 1$
+### 5) $(\lambda xy.\ x-y)\ ((\lambda z.\ z/2)\ 6)\ 1$
 
 $$
 (\lambda xy.\ x-y)\ ((\lambda z.\ z/2)\ 6)\ 1 \Longrightarrow
@@ -52,7 +52,7 @@ $$
 Resposta: $2$
 
 ___
-## 6) $(\lambda x.\ \lambda y.\ - x\ y)\ 9\ 4$
+### 6) $(\lambda x.\ \lambda y.\ - x\ y)\ 9\ 4$
 
 $$
 (\lambda x.\ \lambda y.\ - x\ y)\ 9\ 4 \Longrightarrow
@@ -63,7 +63,7 @@ $$
 Resposta: $5$
 
 ___
-## 7) $(\lambda x.\ xx)\ (\lambda y.\ y)$
+### 7) $(\lambda x.\ xx)\ (\lambda y.\ y)$
 
 $$
 (\lambda x.\ xx)\ (\lambda y.\ y) \Longrightarrow
