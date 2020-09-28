@@ -29,28 +29,65 @@ selection_sort (x:xs) =
         least : selection_sort (remove least (x:xs))
 
 -- Variação 2
--- selection_sort2 :: (Ord a) => [a] -> [a]
--- selection_sort2 [] = []
--- selection_sort2 (x:xs) =
---     let
---         split_at l n = (take n l, l !! n, drop (n+1) l)
-
---         encontra_menor_idx l c idx
---             | c == (length l) = idx
---             | (l !! c) < (l !! idx) = encontra_menor_idx l (c+1) c
---             | otherwise = encontra_menor_idx l (c+1) idx
-        
---         least_id = encontra_menor_idx (x:xs) 0 0
-
---         (left, least, right) = split_at (x:xs) least_id
-
---     in
---         least:(selection_sort2 (left ++ right))
-
 remove_menor :: (Ord a) => (a, [a]) -> (a, [a])
 remove_menor (m, [x]) = if x < m then (x, [m]) else (m, [x])
 remove_menor (menor, (x:xs))
-    | x < fst (remove_menor (menor, xs)) = (x, menor:xs)
-    | otherwise = add (remove_menor (x, xs)) menor
+    | x < menor = add menor (remove_menor (x, xs))
+    | otherwise = add x (remove_menor (menor, xs))
     where
         add a (n, l) = (n, a:l)
+
+selection_sort2 :: (Ord a) => [a] -> [a]
+selection_sort2 [] = []
+selection_sort2 [x] = [x]
+selection_sort2 lst =
+    let
+        -- Temos que usar tail para evitar conflito do menor valor com o head
+        -- Problema do head duplicado
+        (least, new_lst) = remove_menor (head lst, tail lst)
+    
+    in
+        least:(selection_sort2 new_lst)
+
+-- COM CONTAGEM
+remove_menor_cont :: (Ord a) => (a, [a], Int) -> (a, [a], Int)
+remove_menor_cont (m, [x], c) = if x < m then (x, [m], c+1) else (m, [x], c+1)
+remove_menor_cont (menor, (x:xs), c1)
+    | x < menor = add menor (remove_menor_cont (x, xs, c1+1))
+    | otherwise = add x (remove_menor_cont (menor, xs,c1+1))
+    where
+        add a (n, l, c) = (n, a:l, c)
+
+selection_sort2_cont :: (Ord a) => [a] -> ([a], Int)
+selection_sort2_cont [] = ([], 0)
+selection_sort2_cont [x] = ([x], 0)
+selection_sort2_cont (x:xs) =
+    let
+        (least, new_lst, cont) = remove_menor_cont (x, xs, 0)
+
+        (proxima_etapa, n_cont) = selection_sort2_cont new_lst
+    in
+        (least:proxima_etapa, cont + n_cont)
+
+
+{- 
+Em questão de procedimentos, é extremamente bom que a segunda variação não
+necessite de duas passadas por iteração da ordenação, o que ajuda em casos
+onde as listas são bem grandes. Mas, da maneira que eu consegui implementar
+a segunda variação, ocorrem dois problemas:
+
+a) Pela lógica de "remoção e busca do menor", que funciona guardando o
+menor elemento da lista atual fora da lista e o reinsere quando algum
+número ainda menor é encontrado, trocando-os, acaba que o Selection Sort,
+uma vez um algoritmo de sorteamento estável, deixa de ser tal, já que não
+temos garantia de onde elementos iguais serão colocados com essa busca.
+
+b) Na minha implementação ocorreu um perda de performance, possivelmente 
+causada pelo uso de 'tail'. Sinto que uma implementação desse tipo (onde a 
+remoção e busca do menor elemento são simultâneas) poderia ser mais 
+facilmente implementadas em um linguagem procedimental.
+
+Por essas razões, diria que a primeira variação é melhor por, além de ser
+extremamente didática e funcional, também faz bom proveito dos princípios
+funcionais.
+ -}
