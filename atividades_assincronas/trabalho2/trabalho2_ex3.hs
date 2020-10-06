@@ -89,5 +89,5 @@ facilmente implementadas em um linguagem procedimental.
 
 Por essas razões, diria que a primeira variação é melhor por, além de ser
 extremamente didática e funcional, também faz bom proveito dos princípios
-funcionais.
+funcionais (o foldr)
  -}

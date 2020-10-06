@@ -142,7 +142,7 @@ bubble_sort3_cont l =
 
 
 {- 
-Em termos de funcionamento, é possível notar que a variação, como combinação das duas
+Em termos de funcionamento, é possível notar que a variação 3, como combinação das duas
 outras, exige um número menor de comparações que as duas outras. Em alguns casos,
 essa diferença é mínima, como no caso da l4 onde a variação 3 precisou de 500499
 enquanto a 2 precisou de 500500. Porém, analisando-se no geral, caso não existam

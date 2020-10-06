@@ -8,7 +8,7 @@ data Expr a = Val a
             | Mul (Expr a) (Expr a)
             | Pot (Expr a) (Expr a)
 
-avalia :: (Floating a, Integral a) => Expr a -> a
+avalia :: (Floating a) => Expr a -> a
 avalia (Val x) = x
 avalia (Add e1 e2) = (avalia e1) + (avalia e2)
 avalia (Sub e1 e2) = (avalia e1) - (avalia e2)
